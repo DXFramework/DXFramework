@@ -4,18 +4,8 @@
 #include <SDL.h>
 #include <iostream>
 
-typedef int8_t int8;
-typedef int16_t int16;
-typedef int32_t int32;
-typedef int64_t int64;
-
-typedef uint8_t uint8;
-typedef uint16_t uint16;
-typedef uint32_t uint32;
-typedef uint64_t uint64;
-
-typedef float float32;
-typedef double float64;
+#include "defines.h"
+#include "graphics/vertex_buffer.h"
 
 int main() {
     if(SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -40,6 +30,15 @@ int main() {
     }
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
+    Vertex vertices[] = {
+        Vertex{-0.5f, -0.5f, 0.0f},
+        Vertex{0.0f, 0.5f, 0.0f},
+        Vertex{0.5f, -0.5f, 0.0f},
+    };
+    uint32 numVertices = 3;
+
+    VertexBuffer vertexBuffer(vertices, numVertices);
+
     bool close = false;
     while(!close) {
         SDL_Event event;
@@ -55,11 +54,9 @@ int main() {
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glBegin(GL_TRIANGLES);
-        glVertex2f(-0.5f, -0.5f);
-        glVertex2f(0.0f, 0.5f);
-        glVertex2f(0.5f, -0.5f);
-        glEnd();
+        vertexBuffer.bind();
+        glDrawArrays(GL_TRIANGLES, 0, numVertices);
+        vertexBuffer.unbind();
 
         SDL_GL_SwapWindow(window);
     }

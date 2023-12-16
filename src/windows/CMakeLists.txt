@@ -14,7 +14,7 @@ else()
 
 endif()
 
-set(SOURCE "DXFramework.cpp")
+set(SOURCE "DXFramework.cpp" "graphics/vertex_buffer.h")
 
 add_executable(DXFramework ${SOURCE})
 target_include_directories(DXFramework PUBLIC libs/SDL/include)
