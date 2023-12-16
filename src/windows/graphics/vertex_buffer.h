@@ -6,7 +6,7 @@
 #include <cstddef>
 
 struct VertexBuffer {
-    VertexBuffer(void* data, uint32 numVertices) {
+    void init(void* data, uint32 numVertices) {
         glGenVertexArrays(1, &vao);
         glBindVertexArray(vao);
 

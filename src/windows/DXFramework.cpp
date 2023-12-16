@@ -6,6 +6,7 @@
 
 #include "defines.h"
 #include "graphics/vertex_buffer.h"
+#include "graphics/shader.h"
 
 int main() {
     if(SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -37,7 +38,12 @@ int main() {
     };
     uint32 numVertices = 3;
 
-    VertexBuffer vertexBuffer(vertices, numVertices);
+    VertexBuffer vertexBuffer;
+    vertexBuffer.init(vertices, numVertices);
+
+    Shader shader;
+    shader.init("shaders/basic.vs", "shaders/basic.fs");
+    shader.bind();
 
     bool close = false;
     while(!close) {
