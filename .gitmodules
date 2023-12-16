@@ -1,4 +1,0 @@
-[submodule "src/windows/libs/SDL"]
-	path = src/windows/libs/SDL
-	url = https://github.com/libsdl-org/SDL.git
-	branch = SDL2
