@@ -32,9 +32,12 @@ int main() {
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
     Vertex vertices[] = {
-        Vertex{-0.5f, -0.5f, 0.0f},
-        Vertex{0.0f, 0.5f, 0.0f},
-        Vertex{0.5f, -0.5f, 0.0f},
+        Vertex{-0.5f, -0.5f, 0.0f,
+        1.0f, 0.0f, 0.0f, 1.0f},
+        Vertex{0.0f, 0.5f, 0.0f,
+        0.0f, 1.0f, 0.0f, 1.0f},
+        Vertex{0.5f, -0.5f, 0.0f,
+        0.0f, 0.0f, 1.0f, 1.0f},
     };
     uint32 numVertices = 3;
 
@@ -57,7 +60,7 @@ int main() {
             }
         }
 
-        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         vertexBuffer.bind();
