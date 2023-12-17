@@ -7,20 +7,20 @@
 
 struct VertexBuffer {
     void init(void* data, uint32 numVertices) {
-        glGenVertexArrays(1, &vao);
-        glBindVertexArray(vao);
+        GLCALL(glGenVertexArrays(1, &vao));
+        GLCALL(glBindVertexArray(vao));
 
-        glGenBuffers(1, &bufferId);
-        glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-        glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), data, GL_STATIC_DRAW);
+        GLCALL(glGenBuffers(1, &bufferId));
+        GLCALL(glBindBuffer(GL_ARRAY_BUFFER, bufferId));
+        GLCALL(glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), data, GL_STATIC_DRAW));
 
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) offsetof(struct Vertex, x));
+        GLCALL(glEnableVertexAttribArray(0));
+        GLCALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) offsetof(struct Vertex, x)));
 
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) offsetof(struct Vertex, r));
+        GLCALL(glEnableVertexAttribArray(1));
+        GLCALL(glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) offsetof(struct Vertex, r)));
 
-        glBindVertexArray(0);
+        GLCALL(glBindVertexArray(0));
     }
 
     virtual ~VertexBuffer() {
@@ -29,11 +29,11 @@ struct VertexBuffer {
     }
 
     void bind() {
-        glBindVertexArray(vao);
+        GLCALL(glBindVertexArray(vao));
     }
 
     void unbind() {
-        glBindVertexArray(0);
+        GLCALL(glBindVertexArray(0));
     }
 
 private:

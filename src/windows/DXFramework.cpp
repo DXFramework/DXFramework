@@ -9,6 +9,10 @@
 #include "graphics/shader.h"
 #include "graphics/index_buffer.h"
 
+void openGLDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
+    std::cout << "[OpenGL Error] " << message << std::endl;
+}
+
 int main() {
     if(SDL_Init(SDL_INIT_VIDEO) != 0) {
         return -1;
@@ -20,6 +24,10 @@ int main() {
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+    #ifdef _DEBUG
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+    #endif
     
     uint32 flags = SDL_WINDOW_OPENGL;
 
@@ -33,6 +41,12 @@ int main() {
         return -1; 
     }
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
+
+    #ifdef _DEBUG
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(openGLDebugCallback, 0);
+    #endif
 
     Vertex vertices[] = {
         Vertex{-0.5f, -0.5f, 0.0f,
@@ -81,12 +95,12 @@ int main() {
             }
         }
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        GLCALL(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+        GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
         vertexBuffer.bind();
         indexBuffer.bind();
-        glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
+        GLCALL(glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0));
         indexBuffer.unbind();
         vertexBuffer.unbind();
 

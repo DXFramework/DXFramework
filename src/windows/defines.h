@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cstdint>
+#include <iostream>
+#include <GL/glew.h>
 
 typedef int8_t int8;
 typedef int16_t int16;
@@ -25,3 +27,15 @@ struct Vertex {
     float32 b;
     float32 a;
 };
+
+#ifdef _DEBUG
+inline void _GLGetError(const char* file, int line, const char* call) {
+    while(GLenum error = glGetError()) {
+        std::cout << "[OpenGL] " << glewGetErrorString(error) << " in " << file << ":" << line << " Call: " << call << std::endl;
+    }
+}
+
+#define GLCALL(call) call; _GLGetError(__FILE__, __LINE__, #call)
+#else
+#define GLCALL(call) call
+#endif

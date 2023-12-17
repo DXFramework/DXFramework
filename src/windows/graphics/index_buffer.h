@@ -6,9 +6,9 @@
 
 struct IndexBuffer {
     void init(void* data, uint32 numIndices, uint8 elementSize) {
-        glGenBuffers(1, &bufferId);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferId);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * elementSize, data, GL_STATIC_DRAW);
+        GLCALL(glGenBuffers(1, &bufferId));
+        GLCALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferId));
+        GLCALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * elementSize, data, GL_STATIC_DRAW));
     }
 
     virtual ~IndexBuffer() {
@@ -16,11 +16,11 @@ struct IndexBuffer {
     }
 
     void bind() {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferId);
+        GLCALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferId));
     }
 
     void unbind() {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        GLCALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
     }
 
 private:
