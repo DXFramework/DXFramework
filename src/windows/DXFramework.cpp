@@ -7,6 +7,7 @@
 #include "defines.h"
 #include "graphics/vertex_buffer.h"
 #include "graphics/shader.h"
+#include "graphics/index_buffer.h"
 
 int main() {
     if(SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -36,12 +37,23 @@ int main() {
     Vertex vertices[] = {
         Vertex{-0.5f, -0.5f, 0.0f,
         1.0f, 0.0f, 0.0f, 1.0f},
-        Vertex{0.0f, 0.5f, 0.0f,
+        Vertex{-0.5f, 0.5f, 0.0f,
         0.0f, 1.0f, 0.0f, 1.0f},
         Vertex{0.5f, -0.5f, 0.0f,
         0.0f, 0.0f, 1.0f, 1.0f},
+        Vertex{0.5f, 0.5f, 0.0f,
+        1.0f, 0.0f, 0.0f, 1.0f}
     };
-    uint32 numVertices = 3;
+    uint32 numVertices = 4;
+
+    uint32 indices[] = {
+        0, 1, 2,
+        1, 2, 3
+    };
+    uint32 numIndices = 6;
+
+    IndexBuffer indexBuffer;
+    indexBuffer.init(indices, numIndices, sizeof(indices[0]));
 
     VertexBuffer vertexBuffer;
     vertexBuffer.init(vertices, numVertices);
@@ -73,7 +85,9 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         vertexBuffer.bind();
-        glDrawArrays(GL_TRIANGLES, 0, numVertices);
+        indexBuffer.bind();
+        glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
+        indexBuffer.unbind();
         vertexBuffer.unbind();
 
         SDL_GL_SwapWindow(window);
@@ -82,7 +96,6 @@ int main() {
         uint64 counterElapsed = endCounter - lastCounter;
         delta = ((float32)counterElapsed) / (float32)perfCounterFrequency;
         uint32 FPS = (uint32)((float32)perfCounterFrequency / (float32)counterElapsed);
-        std::cout << "FPS: " << FPS << std::endl;
         lastCounter = endCounter;
     }
 
